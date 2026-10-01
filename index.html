@@ -246,15 +246,14 @@
 
     <!-- SUMMARY -->
     <section aria-labelledby="summary-heading">
-      <h2 id="summary-heading">One Demonstration, Many Policies</h2>
+      <h2 id="summary-heading">One demonstration can remain useful for online RL even when 
+        it is not directly executable on the target object.</h2>
 
       <p class="summary">
-        Replay and Reinforce (R²RL) uses a single demonstration as a
-        persistent source of action proposals during online reinforcement
-        learning. At each step, an uncertainty-aware critic ensemble
-        compares the replay action with the learned policy action.
-        This allows the robot to reuse demonstrated behavior while
-        learning adaptations through interaction.
+        we introduce R²RL, which treats the single demonstration as a replay policy rather than merely a one-shot 
+        initialization signal, and introduces uncertainty-aware Q-gating. This allows the demonstration to remain useful 
+        not only for optimizing the source task, but also for guiding cross-object adaptation even when direct replay fails 
+        on the target task.
       </p>
     </section>
 
