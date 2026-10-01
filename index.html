@@ -187,9 +187,23 @@
         </video>
 
         <figcaption>
-          Learning contact-rich manipulation from a single demonstration.
+          Learning contact-rich manipulation across different objects from a single demonstration.
         </figcaption>
       </figure>
+    </section>
+
+        <!-- Bottleneck -->
+    <section aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Collecting per Object Demonstration Data is Costly</h2>
+
+      <p class="summary">
+        Replay and Reinforce (R²RL) uses a single demonstration as a
+        persistent source of action proposals during online reinforcement
+        learning. At each step, an uncertainty-aware critic ensemble
+        compares the replay action with the learned policy action.
+        This allows the robot to reuse demonstrated behavior while
+        learning adaptations through interaction.
+      </p>
     </section>
 
     <!-- SUMMARY -->
@@ -228,31 +242,31 @@
 
     <!-- COMPARISON VIDEOS -->
     <section aria-labelledby="adaptation-heading">
-      <h2 id="adaptation-heading">Cross-Object Adaptation: OpenBox</h2>
+      <h2 id="adaptation-heading">Cross-Object Adaptation: Lid Opening</h2>
 
-      <div class="comparison">
+      <div class="Tasks">
         <figure>
           <video controls muted playsinline preload="metadata">
             <source
-              src="assets/videos/openbox-replay.mp4"
+              src="assets/videos/snapopen.mp4"
               type="video/mp4"
             >
             Your browser does not support embedded video.
           </video>
 
-          <figcaption>Demonstration replay</figcaption>
+          <figcaption>Source Task</figcaption>
         </figure>
 
         <figure>
           <video controls muted playsinline preload="metadata">
             <source
-              src="assets/videos/openbox-r2rl.mp4"
+              src="assets/videos/openbox.mp4"
               type="video/mp4"
             >
             Your browser does not support embedded video.
           </video>
 
-          <figcaption>After R²RL optimization</figcaption>
+          <figcaption>Target Task</figcaption>
         </figure>
       </div>
     </section>
