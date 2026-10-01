@@ -131,6 +131,44 @@
       gap: 24px;
     }
 
+    .comparison.methods {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .section-intro {
+      max-width: 820px;
+      margin: 0 auto 24px;
+    }
+
+    .task-heading {
+      margin: 30px 0 16px;
+      font-size: 21px;
+    }
+
+    .comparison video {
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .ablation-videos video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .method-name {
+      display: block;
+      color: #263142;
+      font-weight: bold;
+    }
+
+    .method-name.ours {
+      color: #1f4e79;
+    }
+
+    .note {
+      color: #667085;
+      font-size: 14px;
+    }
+
     footer {
       margin-top: 65px;
       padding-top: 20px;
@@ -142,7 +180,8 @@
 
     /* Stack comparison videos on small screens */
     @media (max-width: 650px) {
-      .comparison {
+      .comparison,
+      .comparison.methods {
         grid-template-columns: 1fr;
       }
 
@@ -181,7 +220,7 @@
       <h2 id="overview-heading">Overview</h2>
 
       <figure>
-        <video controls muted playsinline preload="metadata">
+        <video controls playsinline preload="metadata" aria-label="Narrated R²RL overview" poster="assets/images/posters/icra_video_withvoice.jpg">
           <source src="assets/videos/ICRA_video_withvoice.mp4" type="video/mp4">
           Your browser does not support embedded video.
         </video>
@@ -193,16 +232,15 @@
     </section>
 
         <!-- Bottleneck -->
-    <section aria-labelledby="summary-heading">
-      <h2 id="summary-heading">Collecting per Object Demonstration Data is Costly</h2>
+    <section aria-labelledby="motivation-heading">
+      <h2 id="motivation-heading">Collecting per Object Demonstration Data is Costly</h2>
 
       <p class="summary">
-        Replay and Reinforce (R²RL) uses a single demonstration as a
-        persistent source of action proposals during online reinforcement
-        learning. At each step, an uncertainty-aware critic ensemble
-        compares the replay action with the learned policy action.
-        This allows the robot to reuse demonstrated behavior while
-        learning adaptations through interaction.
+        A motion that succeeds on one object may fail on another because
+        of differences in compliance, friction, or insertion tolerance.
+        Instead of collecting a new demonstration for every object, we reuse
+        one source-task demonstration to guide online learning on related
+        objects, without collecting target-task demonstrations.
       </p>
     </section>
 
@@ -222,7 +260,7 @@
 
     <!-- METHOD FIGURE -->
     <section aria-labelledby="method-heading">
-      <h2 id="method-heading">Method</h2>
+      <h2 id="method-heading">Method Overview</h2>
 
       <figure>
         <img
@@ -240,33 +278,190 @@
       </figure>
     </section>
 
-    <!-- COMPARISON VIDEOS -->
+    <!-- SOURCE DEMONSTRATIONS -->
+    <section aria-labelledby="demonstrations-heading">
+      <h2 id="demonstrations-heading">Two Source Demonstrations</h2>
+      <p class="section-intro">
+        One demonstration is collected for SnapOpen and one for PegInHole.
+        Each trajectory is reused to optimize its source task and train
+        separate policies on related target objects. The paper evaluates
+        SnapOpen → {SnapOpenNew, OpenBox} and PegInHole → PlugIn.
+      </p>
+      <div class="comparison">
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="SnapOpen source demonstration" poster="assets/images/posters/demo_snapopen.jpg">
+            <source src="assets/videos/demonstration/demo_snapopen.mp4" type="video/mp4">
+            <a href="assets/videos/demonstration/demo_snapopen.mp4">Download the SnapOpen demonstration.</a>
+          </video>
+          <figcaption><span class="method-name">SnapOpen demonstration</span>Source prior for lid-opening tasks.</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="PegInHole source demonstration" poster="assets/images/posters/demo_peginhole.jpg">
+            <source src="assets/videos/demonstration/demo_peginhole.mp4" type="video/mp4">
+            <a href="assets/videos/demonstration/demo_peginhole.mp4">Download the PegInHole demonstration.</a>
+          </video>
+          <figcaption><span class="method-name">PegInHole demonstration</span>Source prior for insertion tasks.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- TASK COMPARISONS: METHOD ORDER IS CONSISTENT ACROSS TASKS -->
     <section aria-labelledby="adaptation-heading">
       <h2 id="adaptation-heading">Cross-Object Adaptation: Lid Opening</h2>
-
-      <div class="Tasks">
+      <p class="section-intro">
+        The SnapOpen demonstration supplies a motion prior for opening a
+        compliant snap-fit lid. OpenBox requires adaptation to a rigid lid
+        with different contact dynamics; direct replay fails on this target.
+        The clips below compare R²RL, IBRL, and RLPD on the source and target tasks.
+      </p>
+      <p class="note">All task-comparison clips below use one source demonstration per method.</p>
+      <h3 class="task-heading">SnapOpen · Source task</h3>
+      <div class="comparison methods">
         <figure>
-          <video controls muted playsinline preload="metadata">
-            <source
-              src="assets/videos/snapopen.mp4"
-              type="video/mp4"
-            >
-            Your browser does not support embedded video.
+          <video controls muted playsinline preload="none" aria-label="R²RL on SnapOpen" poster="assets/images/posters/snapopen_r2rl.jpg">
+            <source src="assets/videos/snapopen/snapopen_r2rl.mp4" type="video/mp4">
+            <a href="assets/videos/snapopen/snapopen_r2rl.mp4">Download the R²RL SnapOpen video.</a>
           </video>
-
-          <figcaption>Source Task</figcaption>
+          <figcaption><span class="method-name ours">R²RL (ours)</span>SnapOpen</figcaption>
         </figure>
-
         <figure>
-          <video controls muted playsinline preload="metadata">
-            <source
-              src="assets/videos/openbox.mp4"
-              type="video/mp4"
-            >
-            Your browser does not support embedded video.
+          <video controls muted playsinline preload="none" aria-label="IBRL on SnapOpen" poster="assets/images/posters/snapopen_ibrl.jpg">
+            <source src="assets/videos/snapopen/snapopen_ibrl.mp4" type="video/mp4">
+            <a href="assets/videos/snapopen/snapopen_ibrl.mp4">Download the IBRL SnapOpen video.</a>
           </video>
+          <figcaption><span class="method-name">IBRL · 1 demo</span>SnapOpen</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="RLPD on SnapOpen" poster="assets/images/posters/snapopen_rlpd.jpg">
+            <source src="assets/videos/snapopen/snapopen_rlpd.mp4" type="video/mp4">
+            <a href="assets/videos/snapopen/snapopen_rlpd.mp4">Download the RLPD SnapOpen video.</a>
+          </video>
+          <figcaption><span class="method-name">RLPD · 1 demo</span>SnapOpen</figcaption>
+        </figure>
+      </div>
 
-          <figcaption>Target Task</figcaption>
+      <h3 class="task-heading">OpenBox · Target task</h3>
+      <div class="comparison methods">
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="R²RL on OpenBox" poster="assets/images/posters/openbox_r2rl.jpg">
+            <source src="assets/videos/openbox/openbox_r2rl.mp4" type="video/mp4">
+            <a href="assets/videos/openbox/openbox_r2rl.mp4">Download the R²RL OpenBox video.</a>
+          </video>
+          <figcaption><span class="method-name ours">R²RL (ours)</span>OpenBox</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="IBRL on OpenBox" poster="assets/images/posters/ibrl_openbox.jpg">
+            <source src="assets/videos/openbox/ibrl_openbox.mp4" type="video/mp4">
+            <a href="assets/videos/openbox/ibrl_openbox.mp4">Download the IBRL OpenBox video.</a>
+          </video>
+          <figcaption><span class="method-name">IBRL · 1 demo</span>OpenBox</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="RLPD on OpenBox" poster="assets/images/posters/openbox_rlpd-1.jpg">
+            <source src="assets/videos/openbox/openbox_rlpd%201.mp4" type="video/mp4">
+            <a href="assets/videos/openbox/openbox_rlpd%201.mp4">Download the RLPD OpenBox video.</a>
+          </video>
+          <figcaption><span class="method-name">RLPD · 1 demo</span>OpenBox</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-labelledby="insertion-heading">
+      <h2 id="insertion-heading">Cross-Object Adaptation: Insertion</h2>
+      <p class="section-intro">
+        The PegInHole demonstration is reused for USB insertion in PlugIn,
+        which requires tighter positional tolerance. R²RL learns through
+        online interaction on each task using the same source demonstration,
+        without a new PlugIn demonstration.
+      </p>
+      <h3 class="task-heading">PegInHole · Source task</h3>
+      <div class="comparison methods">
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="R²RL on PegInHole" poster="assets/images/posters/peginhole_r2rl.jpg">
+            <source src="assets/videos/Peginhole/peginhole_r2rl.mp4" type="video/mp4">
+            <a href="assets/videos/Peginhole/peginhole_r2rl.mp4">Download the R²RL PegInHole video.</a>
+          </video>
+          <figcaption><span class="method-name ours">R²RL (ours)</span>PegInHole</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="IBRL on PegInHole" poster="assets/images/posters/peginhole_ibrl.jpg">
+            <source src="assets/videos/Peginhole/peginhole_ibrl.mp4" type="video/mp4">
+            <a href="assets/videos/Peginhole/peginhole_ibrl.mp4">Download the IBRL PegInHole video.</a>
+          </video>
+          <figcaption><span class="method-name">IBRL · 1 demo</span>PegInHole</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="RLPD on PegInHole" poster="assets/images/posters/peginhole_rlpd.jpg">
+            <source src="assets/videos/Peginhole/peginhole_rlpd.mp4" type="video/mp4">
+            <a href="assets/videos/Peginhole/peginhole_rlpd.mp4">Download the RLPD PegInHole video.</a>
+          </video>
+          <figcaption><span class="method-name">RLPD · 1 demo</span>PegInHole</figcaption>
+        </figure>
+      </div>
+
+      <h3 class="task-heading">PlugIn · Target task</h3>
+      <div class="comparison methods">
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="R²RL on PlugIn" poster="assets/images/posters/plugin_r2rl.jpg">
+            <source src="assets/videos/plugin/plugin_r2rl.mp4" type="video/mp4">
+            <a href="assets/videos/plugin/plugin_r2rl.mp4">Download the R²RL PlugIn video.</a>
+          </video>
+          <figcaption><span class="method-name ours">R²RL (ours)</span>PlugIn</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="IBRL on PlugIn" poster="assets/images/posters/ibrl_plugin.jpg">
+            <source src="assets/videos/plugin/ibrl_plugin.mp4" type="video/mp4">
+            <a href="assets/videos/plugin/ibrl_plugin.mp4">Download the IBRL PlugIn video.</a>
+          </video>
+          <figcaption><span class="method-name">IBRL · 1 demo</span>PlugIn</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="RLPD on PlugIn" poster="assets/images/posters/rlpd_plugin.jpg">
+            <source src="assets/videos/plugin/rlpd_plugin.mp4" type="video/mp4">
+            <a href="assets/videos/plugin/rlpd_plugin.mp4">Download the RLPD PlugIn video.</a>
+          </video>
+          <figcaption><span class="method-name">RLPD · 1 demo</span>PlugIn</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- OPENBOX ABLATIONS -->
+    <section aria-labelledby="ablation-heading">
+      <h2 id="ablation-heading">Ablations and Residual RL</h2>
+      <p class="section-intro">
+        The paper investigates uncertainty-aware Q-gating and behavior-cloning
+        (BC) regularization, and compares action selection with additive
+        residual correction. The regularized Residual RL variant uses the
+        same actor and critic objectives as R²RL.
+      </p>
+      <div class="comparison ablation-videos">
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="Standard Q-gating without uncertainty on OpenBox" poster="assets/images/posters/openbox_abl_woq.jpg">
+            <source src="assets/videos/ablation/openbox_abl_woQ.mp4" type="video/mp4">
+            <a href="assets/videos/ablation/openbox_abl_woQ.mp4">Download the Q-ablation video.</a>
+          </video>
+          <figcaption><span class="method-name">Standard Q-gating</span>OpenBox · Without the uncertainty bonus</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="OpenBox without BC regularization" poster="assets/images/posters/openbox_abl_wobc.jpg">
+            <source src="assets/videos/ablation/openbox_abl_woBC.mp4" type="video/mp4">
+            <a href="assets/videos/ablation/openbox_abl_woBC.mp4">Download the no-BC video.</a>
+          </video>
+          <figcaption><span class="method-name">Without BC regularization</span>OpenBox</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="Standard Residual RL on OpenBox" poster="assets/images/posters/openbox_residualrl.jpg">
+            <source src="assets/videos/ablation/openbox_residualRL.mp4" type="video/mp4">
+            <a href="assets/videos/ablation/openbox_residualRL.mp4">Download the standard Residual RL video.</a>
+          </video>
+          <figcaption><span class="method-name">Standard Residual RL</span>OpenBox · Additive correction learned with TD3</figcaption>
+        </figure>
+        <figure>
+          <video controls muted playsinline preload="none" aria-label="Regularized Residual RL on OpenBox" poster="assets/images/posters/openbox_residualrl_reg.jpg">
+            <source src="assets/videos/ablation/openbox_residualRL_reg.mp4" type="video/mp4">
+            <a href="assets/videos/ablation/openbox_residualRL_reg.mp4">Download the regularized Residual RL video.</a>
+          </video>
+          <figcaption><span class="method-name">Residual RL + regularization</span>OpenBox</figcaption>
         </figure>
       </div>
     </section>
@@ -275,18 +470,13 @@
     <section aria-labelledby="results-heading">
       <h2 id="results-heading">Experimental Results</h2>
 
-      <figure>
-        <img
-          src="assets/images/results.png"
-          alt="Experimental results comparing the evaluated methods."
-          loading="lazy"
-        >
-
-        <figcaption>
-          Replace this caption with a description of your results,
-          including the tasks, metrics, and number of trials.
-        </figcaption>
-      </figure>
+      <p class="summary">
+        The videos illustrate individual runs, rather than aggregate success
+        rates. See <a href="assets/paper/R2RL.pdf">the paper</a> for learning
+        curves, success rates over ten real-world evaluation trials per
+        setting, and the one- and ten-source-demonstration baseline protocols.
+        No target-task demonstrations are supplied for OpenBox or PlugIn.
+      </p>
     </section>
 
     <footer>
